@@ -10,7 +10,7 @@ public class ExampleController {
     @RequestMapping("/api/example")
     @CrossOrigin(origins = "http://localhost:3000")
     public String index() {
-        return "Hi I'm the backend!!";
+        return "Hi I'm the backend!";
     }
 
 }
