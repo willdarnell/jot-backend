@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `contacts`;
 CREATE TABLE `contacts`(
     `contactId` int(11) NOT NULL AUTO_INCREMENT,
     `userId` int(11),
-	`googleId` varchar(80),
+    `googleId` varchar(80),
     `firstName` varchar(80),
     `lastName` varchar(80),
     `emailAddress` varchar(80),
