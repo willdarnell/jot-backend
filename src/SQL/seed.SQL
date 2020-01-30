@@ -14,6 +14,8 @@ CREATE TABLE `contacts`(
     PRIMARY KEY (`contactID`)
 ) ENGINE=InnoDB;
 
+
+
 INSERT INTO `contacts` (`userId`, `googleId`, `firstName`, `lastName`, `emailAddress`, `phoneNumber`, `organization`, `role`, `updateDate`, `createDate`) VALUES
 (3,'c8316699825951721908','Geraldine','Porter','geraldine@nottherainforest.co','(408) 123-5678','Amazon','Software Engineering Intern','2019-01-01','2019-01-01'),
 (1,'c9151718137752397372','Daniel','Smith','hamiltontaylor@hotmail.com','1791562225','Paul-Ball','Scientist- clinical (histocompatibility and immunogenetics)','2019-01-01','2019-01-01'),
@@ -115,3 +117,25 @@ INSERT INTO `contacts` (`userId`, `googleId`, `firstName`, `lastName`, `emailAdd
 (2,'c4398970120457455323','Kristina','Edwards','amy74@gmail.com','+1-095-055-1474x3553','Johnson-Lopez','Contracting civil engineer','2019-01-01','2019-01-01'),
 (3,'c4363696464564332601','Martha','Allen','kingbrian@hotmail.com','+1-963-853-2718','Day-Cooley','Diplomatic Services operational officer','2019-01-01','2019-01-01'),
 (2,'c4323852907655431374','Robert','Atkinson','rbennett@gmail.com','001-530-625-1238x274','Sullivan Inc','Engineer- drilling','2019-01-01','2019-01-01');
+
+DROP TABLE IF EXISTS `activities`;
+CREATE TABLE `activities`(
+    `activityId` int(11) AUTO_INCREMENT,
+    `userId` int(11),
+    `contactId` int(11) NOT NULL,
+    `completedDate` date,
+    `dueDate` date,
+    `status` varchar(1500),
+    `type` varchar(80),
+    `notes` varchar(1500),
+    `title` varchar(80),
+    `createDate` date,
+    PRIMARY KEY (`activityId`),
+    FOREIGN KEY (`contactId`) REFERENCES `contacts` (`contactId`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+INSERT INTO `activities` (`userId`, `contactId`, `completedDate`, `dueDate`, `status`, `type`, `notes`, `title`, `createDate`) VALUES
+(2, ,'2019-01-01','2019-01-01','blank status','type is blank','this is test data','Engineer- drilling','2019-01-01'),
+(2, 4,'2019-01-01','2019-01-01','blank status','type is blank','this is test data','Engineer- drilling','2019-01-01'),
+(2, 2,'2019-01-01','2019-01-01','blank status','type is blank','this is test data','Engineer- drilling','2019-01-01'),
+(2, 3,'2019-01-01','2019-01-01','blank status','type is blank','this is test data','Engineer- drilling','2019-01-01');
