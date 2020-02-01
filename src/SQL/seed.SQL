@@ -42,7 +42,7 @@ CREATE TABLE `contacts`(
     `organization` varchar(80),
     `role` varchar(80),
     `updateDate` date,
-    `createDate` date NOT NULL,
+    `createTime` datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`contactID`),
     FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -159,7 +159,7 @@ CREATE TABLE `activities`(
     `type` varchar(80),
     `notes` varchar(1500),
     `title` varchar(80),
-    `createDate` date,
+    `createTime` datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`activityId`),
     FOREIGN KEY (`contactId`) REFERENCES `contacts` (`contactId`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
