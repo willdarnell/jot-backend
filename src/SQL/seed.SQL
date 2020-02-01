@@ -1,10 +1,9 @@
 /* Moved table drops to top, else FK prevents dropping */
 
+DROP TABLE IF EXISTS `attributes`;
 DROP TABLE IF EXISTS `activities`;
 DROP TABLE IF EXISTS `contacts`;
 DROP TABLE IF EXISTS `users`;
-
-/*** USERS ***/
 
 CREATE TABLE `users`(
     `userId` int(11) NOT NULL AUTO_INCREMENT,
@@ -18,6 +17,7 @@ CREATE TABLE `users`(
     PRIMARY KEY (`userID`)
 ) ENGINE=InnoDB;
 
+
 INSERT INTO `users` (`firstName`, `lastName`, `emailAddress`, `phoneNumber`, `organization`, `role`) VALUES
 ('Doris','Martinez','mary84@yahoo.com','+1-969-477-5159x17953','Fisher, Green and Dixon','Secretary/administrator'),
 ('Melissa','Myers','awade@hotmail.com','+1-456-428-0715x08423','Wilson, Robinson and Norton','Designer, blown glass/stained glass'),
@@ -30,7 +30,6 @@ INSERT INTO `users` (`firstName`, `lastName`, `emailAddress`, `phoneNumber`, `or
 ('Christina','Bentley','deborah86@yahoo.com','735.400.0250','Gomez, Kennedy and Perry','Chartered loss adjuster'),
 ('Francisco','Graham','brewerdavid@hotmail.com','(843)318-4535','Brown LLC','Education officer, community');
 
-/*** CONTACTS ***/
 
 CREATE TABLE `contacts`(
     `contactId` int(11) NOT NULL AUTO_INCREMENT,
@@ -150,8 +149,6 @@ INSERT INTO `contacts` (`userId`, `googleId`, `firstName`, `lastName`, `emailAdd
 (3,'c4363696464564332601','Martha','Allen','kingbrian@hotmail.com','+1-963-853-2718','Day-Cooley','Diplomatic Services operational officer','2019-01-01','2019-01-01'),
 (2,'c4323852907655431374','Robert','Atkinson','rbennett@gmail.com','001-530-625-1238x274','Sullivan Inc','Engineer- drilling','2019-01-01','2019-01-01');
 
-/*** ACTIVITIES ***/
-
 CREATE TABLE `activities`(
     `activityId` int(11) AUTO_INCREMENT,
     `userId` int(11),
@@ -172,3 +169,76 @@ INSERT INTO `activities` (`userId`, `contactId`, `completedDate`, `dueDate`, `st
 (2, 4,'2019-01-01','2019-01-01','blank status','type is blank','this is test data','Engineer- drilling','2019-01-01'),
 (2, 2,'2019-01-01','2019-01-01','blank status','type is blank','this is test data','Engineer- drilling','2019-01-01'),
 (2, 3,'2019-01-01','2019-01-01','blank status','type is blank','this is test data','Engineer- drilling','2019-01-01');
+
+CREATE TABLE `attributes` (
+	`attributeId` int(11) AUTO_INCREMENT,
+	`userId` int(11),
+	`contactId` int(11),
+	`title` varchar(80),
+	`createDateTime` datetime DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`attributeId`),
+    FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE,
+	FOREIGN KEY (`contactId`) REFERENCES `contacts` (`contactId`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+INSERT INTO `attributes` (`userId`, `contactId`, `title`) VALUES
+(5,28,'WomenWhoCode'),
+(2,25,'WomenWhoCode'),
+(1,2,'LinkedIn'),
+(4,17,'WomenWhoCode'),
+(3,13,'LinkedIn'),
+(1,16,'LinkedIn'),
+(5,19,'Soccer League'),
+(4,17,'Soccer League'),
+(2,10,'Soccer League'),
+(2,25,'OSU'),
+(5,20,'LinkedIn'),
+(4,30,'Family'),
+(5,23,'Family'),
+(2,29,'Soccer League'),
+(2,10,'OSU'),
+(2,24,'OSU'),
+(2,29,'Taiwan'),
+(2,11,'WomenWhoCode'),
+(1,18,'OSU'),
+(3,12,'WomenWhoCode'),
+(2,11,'Family'),
+(1,21,'Soccer League'),
+(1,18,'WomenWhoCode'),
+(2,15,'Family'),
+(5,9,'OSU'),
+(3,26,'Family'),
+(4,30,'OSU'),
+(2,3,'Taiwan'),
+(1,27,'WomenWhoCode'),
+(5,23,'Taiwan'),
+(1,21,'OSU'),
+(5,20,'WomenWhoCode'),
+(1,27,'LinkedIn'),
+(2,8,'Taiwan'),
+(2,11,'Taiwan'),
+(5,28,'OSU'),
+(4,7,'Family'),
+(2,8,'Soccer League'),
+(3,26,'Soccer League'),
+(2,15,'OSU'),
+(2,3,'LinkedIn'),
+(2,29,'Family'),
+(4,30,'WomenWhoCode'),
+(5,4,'LinkedIn'),
+(1,18,'LinkedIn'),
+(5,23,'OSU'),
+(1,27,'Family'),
+(1,18,'Family'),
+(2,10,'WomenWhoCode'),
+(2,3,'Family'),
+(3,26,'WomenWhoCode'),
+(2,8,'LinkedIn'),
+(3,6,'Soccer League'),
+(1,27,'Soccer League'),
+(1,2,'Family'),
+(5,22,'LinkedIn'),
+(1,16,'OSU'),
+(2,25,'Soccer League'),
+(1,27,'OSU'),
+(5,22,'WomenWhoCode');
