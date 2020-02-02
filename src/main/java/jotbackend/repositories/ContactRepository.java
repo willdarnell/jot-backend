@@ -1,9 +1,9 @@
-package jotbackend;
+package jotbackend.repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import jotbackend.Contact;
+import jotbackend.classes.Contact;
 import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 

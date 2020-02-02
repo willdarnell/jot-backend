@@ -99,3 +99,15 @@ INSERT INTO `contact` (`user_id`, `google_id`, `first_name`, `last_name`, `email
 (2,'c4398970120457455323','Kristina','Edwards','amy74@gmail.com','+1-095-055-1474x3553','Johnson-Lopez','Contracting civil engineer','2019-01-01','2019-01-01'),
 (3,'c4363696464564332601','Martha','Allen','kingbrian@hotmail.com','+1-963-853-2718','Day-Cooley','Diplomatic Services operational officer','2019-01-01','2019-01-01'),
 (2,'c4323852907655431374','Robert','Atkinson','rbennett@gmail.com','001-530-625-1238x274','Sullivan Inc','Engineer- drilling','2019-01-01','2019-01-01');
+
+INSERT INTO `user` (`first_name`, `last_name`, `email_address`, `phone_number`, `organization`, `role`) VALUES
+('Doris','Martinez','mary84@yahoo.com','+1-969-477-5159x17953','Fisher, Green and Dixon','Secretary/administrator'),
+('Melissa','Myers','awade@hotmail.com','+1-456-428-0715x08423','Wilson, Robinson and Norton','Designer, blown glass/stained glass'),
+('Erika','Monroe','sandraburton@gmail.com','+1-142-851-2400x034','Bishop-Nunez','Publishing copy'),
+('Renee','Frey','boyerjacqueline@hotmail.com','001-317-643-0392','Mays, Browning and Williams','Magazine features editor'),
+('Joan','Atkins','fcompton@gmail.com','0248945174','Ward-Wilcox','Bookseller'),
+('Lisa','Peck','nwilliams@gmail.com','933.188.6841x26961','Russell PLC','Theatre stage manager'),
+('Deanna','Johnson','phillip12@yahoo.com','296-451-3758x06606','Garcia-Ayala','Television production assistant'),
+('Amanda','Scott','dennismills@gmail.com','864-475-9221x16697','Alexander, Watson and Farley','Tourism officer'),
+('Christina','Bentley','deborah86@yahoo.com','735.400.0250','Gomez, Kennedy and Perry','Chartered loss adjuster'),
+('Francisco','Graham','brewerdavid@hotmail.com','(843)318-4535','Brown LLC','Education officer, community');

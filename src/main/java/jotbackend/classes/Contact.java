@@ -1,4 +1,4 @@
-package jotbackend;
+package jotbackend.classes;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,6 +31,7 @@ public class Contact {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
+
 
     public int getContactId() {
         return id;
