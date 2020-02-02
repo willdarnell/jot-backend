@@ -5,8 +5,9 @@ import java.util.Date;
 
 @Entity
 public class Contact {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Integer userId;

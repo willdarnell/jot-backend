@@ -14,7 +14,6 @@ import java.util.Date;
 @RequestMapping(path = "/contacts")
 public class ContactController {
     @Autowired
-
     private ContactRepository contactRepository;
 
     @PostMapping(path = "/add")
