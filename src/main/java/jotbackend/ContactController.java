@@ -40,5 +40,13 @@ public class ContactController {
     @GetMapping(path = "/{id}")
     public @ResponseBody
     Optional<Contact> getContactById(@PathVariable Integer id) {
-        return contactRepository.findById(id); }
+        return contactRepository.findById(id);
+    }
+
+    @GetMapping(path = "/{id}/{userId}")
+    public @ResponseBody
+    Optional<Contact> findByIdandUserId(@PathVariable Integer id, @PathVariable Integer userId){
+        return contactRepository.findByIdandUserId(id, userId);
+    }
+
 }
