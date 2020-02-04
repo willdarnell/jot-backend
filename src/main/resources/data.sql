@@ -111,3 +111,6 @@ INSERT INTO `user` (`first_name`, `last_name`, `email_address`, `phone_number`, 
 ('Amanda','Scott','dennismills@gmail.com','864-475-9221x16697','Alexander, Watson and Farley','Tourism officer'),
 ('Christina','Bentley','deborah86@yahoo.com','735.400.0250','Gomez, Kennedy and Perry','Chartered loss adjuster'),
 ('Francisco','Graham','brewerdavid@hotmail.com','(843)318-4535','Brown LLC','Education officer, community');
+
+INSERT INTO `attribute` (`user_id`, `title`, `description`) VALUES
+(5,'WomenWhoCode', 'Met at WWC');

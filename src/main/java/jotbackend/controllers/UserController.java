@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<User> getAllUsers() { return userRepository.findAll();}
 
-    @GetMapping(path = "/{id")
+    @GetMapping(path = "/{id}")
     public @ResponseBody
     Optional<User> getUserById(@PathVariable Integer id) { return userRepository.findById(id);}
 }
