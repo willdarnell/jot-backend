@@ -2,7 +2,12 @@ package jotbackend.controllers;
 
 import jotbackend.repositories.ContactRepository;
 import jotbackend.classes.Contact;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +40,14 @@ public class ContactController {
     }
 
     @GetMapping(path = "/all")
-    public @ResponseBody Iterable<Contact> getAllContacts() {
-        return contactRepository.findAll();
+    public @ResponseBody Page<Contact> getAllContactsByUserId(@RequestParam Integer userId,
+                                                              @RequestParam Integer pageNum,
+                                                              @RequestParam Integer pageSize,
+                                                              @RequestParam String sortField,
+                                                              @RequestParam String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        return contactRepository.findByUserId(userId, pageable);
     }
 
     @GetMapping(path = "/{id}")
@@ -45,10 +56,18 @@ public class ContactController {
         return contactRepository.findById(id);
     }
 
+    // AB: I think this isn't necessary (based on Slack discussion) but leaving it in as I'll
+    // need the query as an example for the getContactsByAttribute method
     @GetMapping(path = "/{id}/{userId}")
     public @ResponseBody
     Optional<Contact> findByIdandUserId(@PathVariable Integer id, @PathVariable Integer userId){
         return contactRepository.findByIdandUserId(id, userId);
+    }
+
+    @GetMapping(path = "/delete/{id}")
+    public @ResponseBody
+    void deleteContactById(@PathVariable Integer id) {
+        contactRepository.deleteById(id);
     }
 
 }
