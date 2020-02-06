@@ -2,11 +2,8 @@ package jotbackend.classes;
 
 import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Attribute {
@@ -22,8 +19,9 @@ public class Attribute {
     private String description;
 
     // created date/time
-    @CreationTimestamp
-    private Date createDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
+    private Date createDate = new Date();
 
     public int getAttributeId() {
         return attributeId;
