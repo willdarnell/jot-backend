@@ -113,4 +113,11 @@ INSERT INTO `user` (`first_name`, `last_name`, `email_address`, `phone_number`, 
 ('Francisco','Graham','brewerdavid@hotmail.com','(843)318-4535','Brown LLC','Education officer, community');
 
 INSERT INTO `attribute` (`user_id`, `title`, `description`) VALUES
-(5,'WomenWhoCode', 'Met at WWC');
+(7,'OSU','Classmates at OSU'),
+(7,'Soccer League','Volunteer at Timbergrove Soccer League'),
+(1,'LinkedIn','Sourced from LinkedIn'),
+(5,'WomenWhoCode','Member of WWC'),
+(9,'Family','Mcnamara Clan'),
+(8,'Taiwan','Study abroad classmate'),
+(7,'High Priority','Touch base SOON'),
+(5,'Clean up','Possibly bad data');
