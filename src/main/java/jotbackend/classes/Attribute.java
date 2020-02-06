@@ -4,8 +4,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "attributes")
 public class Attribute {
 
     @Id
@@ -22,6 +25,14 @@ public class Attribute {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createDate = new Date();
+
+    @ManyToMany(fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+        }, mappedBy = "attributes")
+    private Set<Contact> contacts = new HashSet<>();
+
 
     public int getAttributeId() {
         return attributeId;
@@ -62,4 +73,6 @@ public class Attribute {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
+    public Set<Contact> getContacts() { return contacts; };
 }

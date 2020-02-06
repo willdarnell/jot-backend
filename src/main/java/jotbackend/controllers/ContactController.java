@@ -50,24 +50,24 @@ public class ContactController {
         return contactRepository.findByUserId(userId, pageable);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{contactId}")
     public @ResponseBody
-    Optional<Contact> getContactById(@PathVariable Integer id) {
-        return contactRepository.findById(id);
+    Optional<Contact> getContactById(@PathVariable Integer contactId) {
+        return contactRepository.findById(contactId);
     }
 
     // AB: I think this isn't necessary (based on Slack discussion) but leaving it in as I'll
     // need the query as an example for the getContactsByAttribute method
-    @GetMapping(path = "/{id}/{userId}")
+    @GetMapping(path = "/{contactId}/{userId}")
     public @ResponseBody
-    Optional<Contact> findByIdandUserId(@PathVariable Integer id, @PathVariable Integer userId){
-        return contactRepository.findByIdandUserId(id, userId);
+    Optional<Contact> findByIdandUserId(@PathVariable Integer contactId, @PathVariable Integer userId){
+        return contactRepository.findByIdandUserId(contactId, userId);
     }
 
-    @GetMapping(path = "/delete/{id}")
+    @GetMapping(path = "/delete/{contactId}")
     public @ResponseBody
-    void deleteContactById(@PathVariable Integer id) {
-        contactRepository.deleteById(id);
+    void deleteContactById(@PathVariable Integer contactId) {
+        contactRepository.deleteById(contactId);
     }
 
 }

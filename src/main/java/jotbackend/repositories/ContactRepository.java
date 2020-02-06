@@ -14,6 +14,6 @@ public interface ContactRepository extends PagingAndSortingRepository<Contact, I
 
     Page<Contact> findByUserId(Integer userId, Pageable pageable);
 
-    @Query("SELECT item FROM Contact item WHERE item.id = :id AND item.userId = :userId")
-    Optional<Contact> findByIdandUserId(@Param("id") Integer id, @Param("userId") Integer userId);
+    @Query("SELECT item FROM Contact item WHERE item.contactId = :contactId AND item.userId = :userId")
+    Optional<Contact> findByIdandUserId(@Param("contactId") Integer contactId, @Param("userId") Integer userId);
 }

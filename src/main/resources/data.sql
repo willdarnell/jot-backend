@@ -1,4 +1,4 @@
-INSERT INTO `contact` (`user_id`, `google_id`, `first_name`, `last_name`, `email_address`, `phone_number`, `organization`, `role`, `update_date`, `create_time`) VALUES
+INSERT INTO `contacts` (`user_id`, `google_id`, `first_name`, `last_name`, `email_address`, `phone_number`, `organization`, `role`, `update_date`, `create_time`) VALUES
 (3,'c8316699825951721908','Geraldine','Porter','geraldine@nottherainforest.co','(408) 123-5678','Amazon','Software Engineering Intern','2019-01-01','2019-01-01'),
 (1,'c9151718137752397372','Daniel','Smith','hamiltontaylor@hotmail.com','1791562225','Paul-Ball','Scientist- clinical (histocompatibility and immunogenetics)','2019-01-01','2019-01-01'),
 (2,'c9087388379514203775','Rebecca','Peters','longjoshua@hotmail.com','(788)515-4040x0650','White PLC','Curator','2019-01-01','2019-01-01'),
@@ -112,7 +112,7 @@ INSERT INTO `user` (`first_name`, `last_name`, `email_address`, `phone_number`, 
 ('Christina','Bentley','deborah86@yahoo.com','735.400.0250','Gomez, Kennedy and Perry','Chartered loss adjuster'),
 ('Francisco','Graham','brewerdavid@hotmail.com','(843)318-4535','Brown LLC','Education officer, community');
 
-INSERT INTO `attribute` (`user_id`, `title`, `description`) VALUES
+INSERT INTO `attributes` (`user_id`, `title`, `description`) VALUES
 (7,'OSU','Classmates at OSU'),
 (7,'Soccer League','Volunteer at Timbergrove Soccer League'),
 (1,'LinkedIn','Sourced from LinkedIn'),
@@ -121,3 +121,6 @@ INSERT INTO `attribute` (`user_id`, `title`, `description`) VALUES
 (8,'Taiwan','Study abroad classmate'),
 (7,'High Priority','Touch base SOON'),
 (5,'Clean up','Possibly bad data');
+
+INSERT INTO `contacts_attributes` (`contact_id`, `attribute_id`) VALUES
+(1, 2);

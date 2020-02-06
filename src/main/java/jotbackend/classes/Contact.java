@@ -2,13 +2,16 @@ package jotbackend.classes;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "contacts")
 public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer contactId;
 
     private Integer userId;
 
@@ -32,13 +35,22 @@ public class Contact {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "contacts_attributes",
+        joinColumns = {@JoinColumn(name = "contact_id")},
+        inverseJoinColumns = {@JoinColumn(name = "attribute_id")})
+    private Set<Attribute> attributes = new HashSet<>();
 
     public int getContactId() {
-        return id;
+        return contactId;
     }
 
-    public void setContactId(Integer id) {
-        this.id = id;
+    public void setContactId(Integer contactId) {
+        this.contactId = contactId;
     }
 
     public Integer getUserId() {
@@ -121,4 +133,5 @@ public class Contact {
         this.createTime = createTime;
     }
 
+    public Set<Attribute> getAttributes() { return attributes; };
 }
