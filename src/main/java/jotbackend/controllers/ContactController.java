@@ -1,8 +1,11 @@
 package jotbackend.controllers;
 
-import jotbackend.repositories.ContactRepository;
 import jotbackend.classes.Contact;
+import jotbackend.repositories.ContactRepository;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,9 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/contacts")
@@ -50,18 +50,23 @@ public class ContactController {
         return contactRepository.findByUserId(userId, pageable);
     }
 
+    @GetMapping(path = "/byAttributes")
+    public @ResponseBody Page<Contact> getContactsByAttributes(@RequestParam Integer userId,
+                                                              @RequestParam Integer pageNum,
+                                                              @RequestParam Integer pageSize,
+                                                              @RequestParam String sortField,
+                                                              @RequestParam String sortDirection,
+                                                              @RequestParam(value="attributeId") List<Integer> attributeIds) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        return contactRepository.getContactsByAttributes(userId, attributeIds, pageable);
+    }
+
+
     @GetMapping(path = "/{contactId}")
     public @ResponseBody
     Optional<Contact> getContactById(@PathVariable Integer contactId) {
         return contactRepository.findById(contactId);
-    }
-
-    // AB: I think this isn't necessary (based on Slack discussion) but leaving it in as I'll
-    // need the query as an example for the getContactsByAttribute method
-    @GetMapping(path = "/{contactId}/{userId}")
-    public @ResponseBody
-    Optional<Contact> findByIdandUserId(@PathVariable Integer contactId, @PathVariable Integer userId){
-        return contactRepository.findByIdandUserId(contactId, userId);
     }
 
     @GetMapping(path = "/delete/{contactId}")

@@ -1,9 +1,10 @@
 package jotbackend.classes;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "contacts")
@@ -35,6 +36,7 @@ public class Contact {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,

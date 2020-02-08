@@ -1,11 +1,10 @@
 package jotbackend.classes;
 
-import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.Date;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "attributes")
@@ -26,6 +25,7 @@ public class Attribute {
     @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createDate = new Date();
 
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY,
         cascade = {
             CascadeType.MERGE,
