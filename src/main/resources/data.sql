@@ -198,3 +198,9 @@ INSERT INTO `contacts_attributes` (`contact_id`, `attribute_id`) VALUES
 (37,3),
 (45,4),
 (50,1);
+
+INSERT INTO `activities` (`user_id`, `complete_date`, `due_date`, `status`, `type`, `notes`) VALUES
+(2,'2019-01-01','2019-01-01','blank status','type is blank','this is test data'),
+(2,'2019-01-01','2019-01-01','blank status','type is blank','this is test data'),
+(2,'2019-01-01','2019-01-01','blank status','type is blank','this is test data'),
+(2,'2019-01-01','2019-01-01','blank status','type is blank','this is test data');
