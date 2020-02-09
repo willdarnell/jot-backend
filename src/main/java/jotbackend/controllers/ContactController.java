@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +74,24 @@ public class ContactController {
     public @ResponseBody
     void deleteContactById(@PathVariable Integer contactId) {
         contactRepository.deleteById(contactId);
+    }
+
+    @PutMapping(path = "/update/{contactId}")
+    public @ResponseBody String updateContact(@PathVariable Integer contactId, @RequestParam String googleId, @RequestParam String firstName,
+                                       @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
+                                       @RequestParam String organization, @RequestParam String role){
+        Contact updatedContact = contactRepository.findById(contactId)
+                .orElseThrow(() -> new ResourceNotFoundException());
+        updatedContact.setGoogleId(googleId);
+        updatedContact.setFirstName(firstName);
+        updatedContact.setLastName(lastName);
+        updatedContact.setEmailAddress(emailAddress);
+        updatedContact.setPhoneNumber(phoneNumber);
+        updatedContact.setOrganization(organization);
+        updatedContact.setRole(role);
+        Contact savedContact = contactRepository.save(updatedContact);
+        return "Saved";
+
     }
 
 }

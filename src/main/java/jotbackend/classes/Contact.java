@@ -34,7 +34,8 @@ public class Contact {
     private Date updateDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+    @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
+    private Date createDate = new Date();
 
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY,
@@ -128,11 +129,11 @@ public class Contact {
     }
 
     public Date getCreateTime() {
-        return createTime;
+        return createDate;
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        this.createDate = createTime;
     }
 
     public Set<Attribute> getAttributes() { return attributes; };
