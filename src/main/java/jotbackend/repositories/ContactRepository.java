@@ -22,4 +22,13 @@ public interface ContactRepository extends PagingAndSortingRepository<Contact, I
                                           List<Integer> attributeIds,
                                           Pageable pageable);
 
+    @Query("SELECT contact " +
+            "FROM Contact contact " +
+            "WHERE contact.userId = :userId " +
+            "AND (contact.firstName LIKE %:searchVal% " +
+            "OR contact.lastName LIKE %:searchVal% " +
+            "OR CONCAT(contact.firstName, ' ', contact.lastName) LIKE %:searchVal%)")
+    Page<Contact> searchContactsByName(@Param("userId") Integer userId,
+                                       @Param("searchVal") String searchVal,
+                                       Pageable pageable);
 }

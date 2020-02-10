@@ -63,6 +63,17 @@ public class ContactController {
         return contactRepository.getContactsByAttributes(userId, attributeIds, pageable);
     }
 
+    @GetMapping(path = "/searchByName")
+    public @ResponseBody Page<Contact> searchContactsByName(@RequestParam Integer userId,
+                                                               @RequestParam Integer pageNum,
+                                                               @RequestParam Integer pageSize,
+                                                               @RequestParam String sortField,
+                                                               @RequestParam String sortDirection,
+                                                               @RequestParam String searchVal) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        return contactRepository.searchContactsByName(userId, searchVal, pageable);
+    }
 
     @GetMapping(path = "/{contactId}")
     public @ResponseBody
