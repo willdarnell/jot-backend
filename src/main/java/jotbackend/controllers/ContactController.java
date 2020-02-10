@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@CrossOrigin
 @RequestMapping(path = "/contacts")
 public class ContactController {
     @Autowired
