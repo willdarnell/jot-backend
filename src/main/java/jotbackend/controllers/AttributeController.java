@@ -33,18 +33,18 @@ public class AttributeController {
         attributeRepository.save(newAttribute);
         return "Saved";
     }
-/*
+
     @GetMapping(path = "/all")
-    public @ResponseBody Page<Contact> getAllContactsByUserId(@RequestParam Integer userId,
+    public @ResponseBody Page<Attribute> getAllAttributesByUserId(@RequestParam Integer userId,
                                                               @RequestParam Integer pageNum,
                                                               @RequestParam Integer pageSize,
                                                               @RequestParam String sortField,
                                                               @RequestParam String sortDirection) {
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-        return contactRepository.findByUserId(userId, pageable);
+        return attributeRepository.findByUserId(userId, pageable);
     }
-
+/*
     @PutMapping(path = "/delete/{contactId}")
     public @ResponseBody
     void deleteContactById(@PathVariable Integer contactId) {
