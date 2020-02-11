@@ -1,7 +1,7 @@
 package jotbackend.repositories;
 
 import jotbackend.classes.Attribute;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface AttributeRepository extends CrudRepository<Attribute, Integer> {
+public interface AttributeRepository extends PagingAndSortingRepository<Attribute, Integer> {
 }
