@@ -12,7 +12,7 @@ public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long contactId;
+    private Integer contactId;
 
     private Integer userId;
 
@@ -48,11 +48,11 @@ public class Contact {
         inverseJoinColumns = {@JoinColumn(name = "attribute_id")})
     private Set<Attribute> attributes = new HashSet<>();
 
-    public Long getContactId() {
+    public Integer getContactId() {
         return contactId;
     }
 
-    public void setContactId(Long contactId) {
+    public void setContactId(Integer contactId) {
         this.contactId = contactId;
     }
 
