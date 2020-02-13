@@ -19,10 +19,6 @@ public class User {
 
     private String phoneNumber;
 
-    private String organization;
-
-    private String role;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createDate = new Date();
@@ -66,26 +62,6 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Date getCreateTime() {
-        return createDate;
     }
 
     public void setCreateTime(Date createTime) {

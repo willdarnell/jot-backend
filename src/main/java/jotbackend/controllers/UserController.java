@@ -19,15 +19,12 @@ public class UserController {
 
     @PostMapping(path = "/add")
     public @ResponseBody String addNewUser (@RequestParam String firstName, @RequestParam String lastName, @RequestParam String emailAddress,
-                                            @RequestParam String phoneNumber, @RequestParam String organization,
-                                            @RequestParam String role) {
+                                            @RequestParam String phoneNumber) {
         User newUser = new User();
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
         newUser.setEmailAddress(emailAddress);
         newUser.setPhoneNumber(phoneNumber);
-        newUser.setOrganization(organization);
-        newUser.setRole(role);
         newUser.setCreateTime(new Date(119, 6, 8));
         userRepository.save(newUser);
         return "Saved";
