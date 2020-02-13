@@ -14,7 +14,7 @@ import jotbackend.classes.Activity;
 import jotbackend.repositories.ActivityRepository;
 
 @Controller
-@RequestMapping(path = "/activiities")
+@RequestMapping(path = "/activities")
 public class ActivityController {
     @Autowired
     private ActivityRepository activityRepository;
