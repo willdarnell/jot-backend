@@ -16,7 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@CrossOrigin
+@CrossOrigin(allowedHeaders = "*")
 @RequestMapping(path = "/contacts")
 public class ContactController {
     @Autowired
@@ -82,7 +82,7 @@ public class ContactController {
         return contactRepository.findById(contactId);
     }
 
-    @GetMapping(path = "/delete/{contactId}")
+    @PutMapping(path = "/delete/{contactId}")
     public @ResponseBody
     void deleteContactById(@PathVariable Integer contactId) {
         contactRepository.deleteById(contactId);

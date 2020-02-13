@@ -34,7 +34,7 @@ public class Attribute {
     private Set<Contact> contacts = new HashSet<>();
 
 
-    public int getAttributeId() {
+    public Integer getAttributeId() {
         return attributeId;
     }
 
