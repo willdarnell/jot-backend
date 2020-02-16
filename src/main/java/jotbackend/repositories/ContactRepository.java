@@ -1,6 +1,7 @@
 package jotbackend.repositories;
 
 import jotbackend.classes.Contact;
+import jotbackend.classes.Activity;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -31,4 +32,11 @@ public interface ContactRepository extends PagingAndSortingRepository<Contact, I
     Page<Contact> searchContactsByName(@Param("userId") Integer userId,
                                        @Param("searchVal") String searchVal,
                                        Pageable pageable);
+
+    @Query(value = "SELECT activity.createDate, activity.notes, Contact.firstName " +
+            "FROM Activity activity INNER JOIN contacts_activities contact_activity on (activity.activityId = contact_activity.activityId) " +
+            "INNER JOIN Contact contact on (contact.contactId = contact_activity.contactId) " +
+            "WHERE activity.createDate=(SELECT MAX(activity.createDate) FROM activity) ", nativeQuery = true)
+    String getRecentActivitiesForContact(@Param("contactId") Integer contactId);
+
 }

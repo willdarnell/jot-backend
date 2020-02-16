@@ -106,4 +106,9 @@ public class ContactController {
 
     }
 
+    @GetMapping(path = "/getMostRecent/{contactId")
+    public @ResponseBody String getRecentActivitiesForContact(@PathVariable Integer contactId){
+        return contactRepository.getRecentActivitiesForContact(contactId);
+    }
+
 }
