@@ -13,4 +13,9 @@ public class ExampleController {
         return "Hi I'm the backend!";
     }
 
+    @RequestMapping(value = "/login")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public String test() {
+        return "Test";
+    }
 }
