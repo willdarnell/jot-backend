@@ -4,11 +4,16 @@ import jotbackend.classes.Contact;
 import jotbackend.classes.Activity;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import javax.persistence.NamedNativeQuery;
 
 public interface ContactRepository extends PagingAndSortingRepository<Contact, Integer> {
 
@@ -33,10 +38,8 @@ public interface ContactRepository extends PagingAndSortingRepository<Contact, I
                                        @Param("searchVal") String searchVal,
                                        Pageable pageable);
 
-    @Query(value = "SELECT activity.createDate, activity.notes, Contact.firstName " +
-            "FROM Activity activity INNER JOIN contacts_activities contact_activity on (activity.activityId = contact_activity.activityId) " +
-            "INNER JOIN Contact contact on (contact.contactId = contact_activity.contactId) " +
-            "WHERE activity.createDate=(SELECT MAX(activity.createDate) FROM activity) ", nativeQuery = true)
-    String getRecentActivitiesForContact(@Param("contactId") Integer contactId);
+    @Query("SELECT contact.activities FROM Contact contact where contact.contactId = :contactId" )
+    List<Activity> getRecentActivitiesByContact(@Param("contactId") Integer contactId);
+
 
 }

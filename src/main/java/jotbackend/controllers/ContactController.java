@@ -1,11 +1,14 @@
 package jotbackend.controllers;
 
+import jotbackend.classes.Activity;
 import jotbackend.classes.Contact;
+import jotbackend.classes.User;
 import jotbackend.repositories.ContactRepository;
+import jotbackend.repositories.ActivityRepository;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Lists;
+
+import javax.swing.text.html.Option;
 
 @Controller
 @CrossOrigin(allowedHeaders = "*")
@@ -106,9 +112,17 @@ public class ContactController {
 
     }
 
-    @GetMapping(path = "/getMostRecent/{contactId")
-    public @ResponseBody String getRecentActivitiesForContact(@PathVariable Integer contactId){
-        return contactRepository.getRecentActivitiesForContact(contactId);
+    @GetMapping(path = "/getRecentActivities/{contactId}")
+    public @ResponseBody
+    List<Activity> getRecentActivitiesByContact(@PathVariable Integer contactId){
+        List<Activity> list = contactRepository.getRecentActivitiesByContact(contactId);
+        return list;
     }
 
+    @GetMapping(path = "getMostRecentActivity/{contactId}")
+    public @ResponseBody
+    Activity getMostRecentActivity(@PathVariable Integer contactId){
+        List<Activity> list = contactRepository.getRecentActivitiesByContact(contactId);
+        return list.get(list.size() - 1);
+    }
 }
