@@ -33,9 +33,6 @@ public class Activity {
     @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createDate = new Date();
 
-
-
-
     public Integer getActivityId() {
         return activityId;
     }

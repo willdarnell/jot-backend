@@ -1,5 +1,6 @@
 package jotbackend.controllers;
 
+import jotbackend.classes.Activity;
 import jotbackend.classes.Attribute;
 import jotbackend.repositories.AttributeRepository;
 import jotbackend.classes.Contact;
@@ -176,6 +177,20 @@ public class ContactController {
         }
         return "Saved";
 
+    }
+
+    @GetMapping(path = "/getRecentActivities/{contactId}")
+    public @ResponseBody
+    List<Activity> getRecentActivitiesByContact(@PathVariable Integer contactId){
+        List<Activity> list = contactRepository.getRecentActivitiesByContact(contactId);
+        return list;
+    }
+
+    @GetMapping(path = "getMostRecentActivity/{contactId}")
+    public @ResponseBody
+    Activity getMostRecentActivity(@PathVariable Integer contactId){
+        List<Activity> list = contactRepository.getRecentActivitiesByContact(contactId);
+        return list.get(list.size() - 1);
     }
 
 }
