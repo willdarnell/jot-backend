@@ -3,6 +3,7 @@ package jotbackend.controllers;
 import jotbackend.classes.Attribute;
 import jotbackend.repositories.AttributeRepository;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,12 @@ public class AttributeController {
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return attributeRepository.findByUserId(userId, pageable);
+    }
+
+    @GetMapping(path = "/{attributeId}")
+    public @ResponseBody
+    Optional<Attribute> getAttributeById(@PathVariable Integer attributeId) {
+        return attributeRepository.findById(attributeId);
     }
 
 }

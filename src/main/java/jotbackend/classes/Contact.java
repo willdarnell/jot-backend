@@ -1,10 +1,10 @@
 package jotbackend.classes;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 import javax.persistence.*;
+import jotbackend.classes.Activity;
 
 @Entity
 @Table(name = "contacts")
@@ -47,6 +47,13 @@ public class Contact {
         joinColumns = {@JoinColumn(name = "contact_id")},
         inverseJoinColumns = {@JoinColumn(name = "attribute_id")})
     private Set<Attribute> attributes = new HashSet<>();
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "contact_id")
+    private List<Activity> activities = new ArrayList<>();
 
     public Integer getContactId() {
         return contactId;

@@ -33,17 +33,6 @@ public class Activity {
     @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createDate = new Date();
 
-    @JsonBackReference
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.MERGE,
-                    CascadeType.PERSIST
-            })
-    @JoinTable(name = "contacts_activities",
-            joinColumns = {@JoinColumn(name = "activity_id")},
-            inverseJoinColumns = {@JoinColumn(name = "contact_id")})
-    private Set<Contact> contacts = new HashSet<>();
-
     public Integer getActivityId() {
         return activityId;
     }
@@ -108,13 +97,9 @@ public class Activity {
         this.createDate = createDate;
     }
 
-    public Set<Contact> getContacts() {
-        return contacts;
-    }
 
-    public void setContacts(Set<Contact> contacts) {
-        this.contacts = contacts;
-    }
+
+
 
 
 }
