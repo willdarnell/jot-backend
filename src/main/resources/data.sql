@@ -200,8 +200,8 @@ INSERT INTO `contacts_attributes` (`contact_id`, `attribute_id`) VALUES
 (50,1);
 
 INSERT INTO `activities` (`user_id`, `complete_date`, `due_date`, `status`, `type`, `notes`, `contact_id`) VALUES
-(2,'2019-01-01','2019-01-01','blank status','type is blank','this is the first entry', 1),
-(2,'2019-01-01','2019-01-01','blank status','type is blank','this is the second entry', 2),
-(2,'2019-01-01','2019-01-01','blank status','type is blank','this is the third entry', 3),
-(2,'2019-01-01','2019-01-01','blank status','type is blank','this is the fourth entry', 4);
+(2,'2019-01-01','2019-01-01','blank status','type is blank','this is the first entry', 3),
+(2,'2019-01-01','2019-01-01','blank status','type is blank','this is the second entry', 5),
+(2,'2019-01-01','2019-01-01','blank status','type is blank','this is the third entry', 8),
+(2,'2019-01-01','2019-01-01','blank status','type is blank','this is the fourth entry', 8);
 

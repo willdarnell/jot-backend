@@ -144,4 +144,6 @@ public class Contact {
     }
 
     public Set<Attribute> getAttributes() { return attributes; };
+
+    public List<Activity> getActivities() { return activities; };
 }
