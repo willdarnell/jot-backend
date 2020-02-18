@@ -36,4 +36,9 @@ public class ActivityController {
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Activity> getAllActivities() { return activityRepository.findAll(); }
 
+    @DeleteMapping(path = "/delete/{activityId}")
+    public @ResponseBody
+    void deleteActivityById(@PathVariable Integer activityId) {
+        activityRepository.deleteById(activityId);
+    }
 }
