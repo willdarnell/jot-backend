@@ -63,4 +63,16 @@ public class ActivityController {
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return activityRepository.getActivitiesByType(userId, type, pageable);
     }
+
+    @GetMapping(path = "/searchByNotes")
+    public @ResponseBody Page<Activity> searchActivitiesByNotes(@RequestParam Integer userId,
+                                                            @RequestParam Integer pageNum,
+                                                            @RequestParam Integer pageSize,
+                                                            @RequestParam String sortField,
+                                                            @RequestParam String sortDirection,
+                                                            @RequestParam String searchVal) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        return activityRepository.searchActivitiesByNotes(userId, searchVal, pageable);
+    }
 }

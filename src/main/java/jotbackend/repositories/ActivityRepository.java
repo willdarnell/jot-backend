@@ -19,4 +19,12 @@ public interface ActivityRepository extends PagingAndSortingRepository<Activity,
     Page<Activity> getActivitiesByType(@Param("userId") Integer userId,
                                           String type,
                                           Pageable pageable);
+
+    @Query("SELECT activity " +
+            "FROM Activity activity " +
+            "WHERE activity.userId = :userId " +
+            "AND (activity.notes LIKE %:searchVal%) ")
+    Page<Activity> searchActivitiesByNotes(@Param("userId") Integer userId,
+                                       @Param("searchVal") String searchVal,
+                                       Pageable pageable);
 }
