@@ -3,6 +3,8 @@ package jotbackend.controllers;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import jotbackend.classes.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,5 +42,11 @@ public class ActivityController {
     public @ResponseBody
     void deleteActivityById(@PathVariable Integer activityId) {
         activityRepository.deleteById(activityId);
+    }
+
+    @GetMapping(path = "/{activityId}")
+    public @ResponseBody
+    Optional<Activity> getActivityById(@PathVariable Integer activityId) {
+        return activityRepository.findById(activityId);
     }
 }
