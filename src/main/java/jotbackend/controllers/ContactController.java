@@ -46,6 +46,24 @@ public class ContactController {
         contactRepository.save(contact);
     }
 
+    private void addAttributeToContact(Integer contactId, String attributeTitle) {
+        Optional<Contact> findContactResult = contactRepository.findById(contactId);
+        if (!findContactResult.isPresent()) {
+            return;
+        }
+        Contact contact = findContactResult.get();
+
+        List<Attribute> findAttributeResult = attributeRepository.findByTitle(attributeTitle);
+        if (findAttributeResult.size() == 0) {
+            return;
+        }
+        Attribute attribute = findAttributeResult.get(0);
+
+        contact.getAttributes().add(attribute);
+
+        contactRepository.save(contact);
+    }
+
     private void removeAttributeFromContact(Integer contactId, Integer attributeId) {
         Optional<Contact> findContactResult = contactRepository.findById(contactId);
         if (!findContactResult.isPresent()) {
@@ -64,11 +82,29 @@ public class ContactController {
         contactRepository.save(contact);
     }
 
+    private void removeAttributeFromContact(Integer contactId, String attributeTitle) {
+        Optional<Contact> findContactResult = contactRepository.findById(contactId);
+        if (!findContactResult.isPresent()) {
+            return;
+        }
+        Contact contact = findContactResult.get();
+
+        List<Attribute> findAttributeResult = attributeRepository.findByTitle(attributeTitle);
+        if (findAttributeResult.size() == 0) {
+            return;
+        }
+        Attribute attribute = findAttributeResult.get(0);
+
+        contact.getAttributes().remove(attribute);
+
+        contactRepository.save(contact);
+    }
+
     @PostMapping(path = "/add")
     public @ResponseBody String addNewContact (@RequestParam Integer userId, @RequestParam String googleId, @RequestParam String firstName,
                                                @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
                                                @RequestParam String organization, @RequestParam String role,
-                                               @RequestParam(value="attributeId") List<Integer> attributeIds) {
+                                               @RequestParam(value="attributeTitle") List<String> attributeTitles) {
         Contact newContact = new Contact();
         newContact.setUserId(userId);
         newContact.setGoogleId(googleId);
@@ -83,7 +119,7 @@ public class ContactController {
         newContact = contactRepository.save(newContact);
         Integer newId = newContact.getContactId();
         // Add any attributes to newly created contact
-        for (Integer attribute : attributeIds) {
+        for (String attribute : attributeTitles) {
             addAttributeToContact(newId, attribute);
         }
         return "Saved";
@@ -158,7 +194,7 @@ public class ContactController {
     public @ResponseBody String updateContact(@PathVariable Integer contactId, @RequestParam String googleId, @RequestParam String firstName,
                                               @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
                                               @RequestParam String organization, @RequestParam String role,
-                                              @RequestParam(value="attributeId") List<Integer> attributeIds){
+                                              @RequestParam(value="attributeTitle") List<String> attributeTitles){
         Contact updatedContact = contactRepository.findById(contactId)
                 .orElseThrow(() -> new ResourceNotFoundException());
         updatedContact.setGoogleId(googleId);
@@ -172,7 +208,7 @@ public class ContactController {
         updatedContact.getAttributes().clear();
         Contact savedContact = contactRepository.save(updatedContact);
         // Re-add new list of attributes
-        for (Integer attribute : attributeIds) {
+        for (String attribute : attributeTitles) {
             addAttributeToContact(contactId, attribute);
         }
         return "Saved";
