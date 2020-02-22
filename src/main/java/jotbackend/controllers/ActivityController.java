@@ -4,17 +4,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import jotbackend.classes.Activity;
 import jotbackend.classes.Contact;
+import jotbackend.repositories.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import jotbackend.classes.Activity;
-import jotbackend.repositories.ActivityRepository;
 
 @Controller
 @RequestMapping(path = "/activities")
@@ -23,8 +25,12 @@ public class ActivityController {
     private ActivityRepository activityRepository;
 
     @PostMapping(path = "/add")
-    public @ResponseBody String addNewActivity (@RequestParam Integer userId, @RequestParam Date completeDate, @RequestParam Date dueDate,
-                                                @RequestParam String status, @RequestParam String type, @RequestParam String notes ){
+    public @ResponseBody String addNewActivity (@RequestParam Integer userId,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date completeDate,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dueDate,
+                                                @RequestParam String status,
+                                                @RequestParam String type,
+                                                @RequestParam String notes ){
         Activity newActivity = new Activity();
         newActivity.setUserId(userId);
         newActivity.setCompleteDate(completeDate);
@@ -37,8 +43,27 @@ public class ActivityController {
     }
 
     @GetMapping(path = "/all")
-    public @ResponseBody Iterable<Activity> getAllActivities() { return activityRepository.findAll(); }
-
+    public @ResponseBody Page<Activity> getAllActivitiesByUserId(@RequestParam Integer userId,
+                                                              @RequestParam Integer pageNum,
+                                                              @RequestParam Integer pageSize,
+                                                              @RequestParam String sortField,
+                                                              @RequestParam String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        return activityRepository.findByUserId(userId, pageable);
+    }
+/*
+    @GetMapping(path = "/byContactId")
+    public @ResponseBody Page<Activity> getAllActivitiesByContactId(@RequestParam Integer contactId,
+                                                                 @RequestParam Integer pageNum,
+                                                                 @RequestParam Integer pageSize,
+                                                                 @RequestParam String sortField,
+                                                                 @RequestParam String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize,
+                Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        return activityRepository.findByContactId(contactId, pageable);
+    }
+*/
     @DeleteMapping(path = "/delete/{activityId}")
     public @ResponseBody
     void deleteActivityById(@PathVariable Integer activityId) {
@@ -74,5 +99,25 @@ public class ActivityController {
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return activityRepository.searchActivitiesByNotes(userId, searchVal, pageable);
+    }
+
+    @PutMapping(path = "/update")
+    public @ResponseBody String updateActivity (@RequestParam Integer activityId,
+                                                @RequestParam Integer userId,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date completeDate,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dueDate,
+                                                @RequestParam String status,
+                                                @RequestParam String type,
+                                                @RequestParam String notes ){
+        Activity updatedActivity = activityRepository.findById(activityId)
+                .orElseThrow(() -> new ResourceNotFoundException());
+        updatedActivity.setUserId(userId);
+        updatedActivity.setCompleteDate(completeDate);
+        updatedActivity.setDueDate(dueDate);
+        updatedActivity.setStatus(status);
+        updatedActivity.setType(type);
+        updatedActivity.setNotes(notes);
+        activityRepository.save(updatedActivity);
+        return "Saved";
     }
 }
