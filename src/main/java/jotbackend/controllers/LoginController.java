@@ -69,7 +69,8 @@ public class LoginController {
                 String givenName = (String) payload.get("given_name");
 
                 Integer userId = userService.addNewUser(gid, givenName, familyName, email, "");
-                System.out.println(contactService.addUserContacts(userId, accessToken));
+                // Integer userId = 15;
+                System.out.println(contactService.getAndAddUserContacts(userId, accessToken));
             }
 
         } else {

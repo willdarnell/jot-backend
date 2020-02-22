@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.*;
 import javax.persistence.*;
 import jotbackend.classes.Activity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Entity
 @Table(name = "contacts")
@@ -54,6 +55,23 @@ public class Contact {
     )
     @JoinColumn(name = "contact_id")
     private List<Activity> activities = new ArrayList<>();
+
+    public Contact() {
+
+    }
+
+    public Contact(Integer userId, String googleId, String firstName,
+                   String lastName, String emailAddress, String phoneNumber,
+                   String organization, String role) {
+        this.userId = userId;
+        this.googleId = googleId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
+        this.organization = organization;
+        this.role = role;
+    }
 
     public Integer getContactId() {
         return contactId;
