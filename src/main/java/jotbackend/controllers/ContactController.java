@@ -190,11 +190,11 @@ public class ContactController {
         contactRepository.deleteById(contactId);
     }
 
-    @PutMapping(path = "/update/{contactId}")
-    public @ResponseBody String updateContact(@PathVariable Integer contactId, @RequestParam String googleId, @RequestParam String firstName,
+    @PutMapping(path = "update/{contactId}")
+    void updateContact(@PathVariable Integer contactId, @RequestParam String googleId, @RequestParam String firstName,
                                               @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
                                               @RequestParam String organization, @RequestParam String role,
-                                              @RequestParam(value="attributeTitle") List<String> attributeTitles){
+                                              @RequestParam(required = false, value="attributeTitle") List<String> attributeTitles){
         Contact updatedContact = contactRepository.findById(contactId)
                 .orElseThrow(() -> new ResourceNotFoundException());
         updatedContact.setGoogleId(googleId);
@@ -208,10 +208,12 @@ public class ContactController {
         updatedContact.getAttributes().clear();
         Contact savedContact = contactRepository.save(updatedContact);
         // Re-add new list of attributes
-        for (String attribute : attributeTitles) {
-            addAttributeToContact(contactId, attribute);
+        if (attributeTitles != null) {
+            for (String attribute : attributeTitles) {
+                addAttributeToContact(contactId, attribute);
+            }
         }
-        return "Saved";
+        //return "Saved";
 
     }
 
