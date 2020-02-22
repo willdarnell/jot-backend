@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import jotbackend.classes.Contact;
 
 @Entity
 @Table(name = "activities")
@@ -32,6 +33,10 @@ public class Activity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createDate = new Date();
+
+    @ManyToOne
+    @JoinColumn(name = "contact_id")
+    private Contact contact;
 
     public Integer getActivityId() {
         return activityId;

@@ -51,9 +51,9 @@ public class Contact {
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            mappedBy = "contact"
     )
-    @JoinColumn(name = "contact_id")
     private List<Activity> activities = new ArrayList<>();
 
     public Contact() {

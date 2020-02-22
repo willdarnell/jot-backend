@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface ActivityRepository extends PagingAndSortingRepository<Activity, Integer> {
 
+    Page<Activity> findByUserId(Integer userId, Pageable pageable);
+
     @Query("SELECT DISTINCT activityRecord " +
             "FROM Activity activityRecord " +
             "WHERE activityRecord.userId = :userId " +
@@ -27,4 +29,9 @@ public interface ActivityRepository extends PagingAndSortingRepository<Activity,
     Page<Activity> searchActivitiesByNotes(@Param("userId") Integer userId,
                                        @Param("searchVal") String searchVal,
                                        Pageable pageable);
+
+    @Query("SELECT activity " +
+            "FROM Activity activity " +
+            "WHERE activity.contact.contactId = :contactId" )
+    Page<Activity> findByContactId(@Param("contactId") Integer contactId, Pageable pageable);
 }
