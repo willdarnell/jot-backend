@@ -52,7 +52,7 @@ public class ActivityController {
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return activityRepository.findByUserId(userId, pageable);
     }
-/*
+
     @GetMapping(path = "/byContactId")
     public @ResponseBody Page<Activity> getAllActivitiesByContactId(@RequestParam Integer contactId,
                                                                  @RequestParam Integer pageNum,
@@ -63,7 +63,7 @@ public class ActivityController {
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return activityRepository.findByContactId(contactId, pageable);
     }
-*/
+
     @DeleteMapping(path = "/delete/{activityId}")
     public @ResponseBody
     void deleteActivityById(@PathVariable Integer activityId) {

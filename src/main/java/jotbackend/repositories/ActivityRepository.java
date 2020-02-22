@@ -29,11 +29,9 @@ public interface ActivityRepository extends PagingAndSortingRepository<Activity,
     Page<Activity> searchActivitiesByNotes(@Param("userId") Integer userId,
                                        @Param("searchVal") String searchVal,
                                        Pageable pageable);
-/*
+
     @Query("SELECT activity " +
-            "FROM Contact contact " +
-            "JOIN contact.activities activity " +
-            "WHERE contact.contactId = :contactId" )
+            "FROM Activity activity " +
+            "WHERE activity.contact.contactId = :contactId" )
     Page<Activity> findByContactId(@Param("contactId") Integer contactId, Pageable pageable);
- */
 }
