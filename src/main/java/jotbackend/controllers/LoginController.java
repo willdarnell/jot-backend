@@ -37,7 +37,7 @@ public class LoginController {
 
     // @PostMapping(path = "/login", produces = "application/json")
     @PostMapping(path = "/login")
-    String verifyToken (@RequestBody Map<String, String> request) throws GeneralSecurityException, IOException {
+    User verifyToken (@RequestBody Map<String, String> request) throws GeneralSecurityException, IOException {
         String idTokenString = request.get("idTokenString");
         String accessToken = request.get("accessToken");
 
@@ -49,34 +49,37 @@ public class LoginController {
                 .setAudience(Collections.singletonList(CLIENT_ID))
                 .build();
         GoogleIdToken idToken = verifier.verify(idTokenString);
+        User user = null;
 
         if (idToken != null) {
             Payload payload = idToken.getPayload();
 
             // Check if existing user
             String gid = payload.getSubject();
-            System.out.println("User ID: " + gid);
-            Optional<User> user = userService.getUserByGid(gid);
+            System.out.println("User Google ID: " + gid);
+            Optional<User> optionalUser = userService.getUserByGid(gid);
 
-            if (user.isPresent()) {
+            if (optionalUser.isPresent()) {
                 System.out.println("User already exists");
+                user = optionalUser.get();
             }
             else {
+                System.out.println("Creating new user");
                 // Get profile information from payload
                 String email = payload.getEmail();
                 // String pictureUrl = (String) payload.get("picture");
                 String familyName = (String) payload.get("family_name");
                 String givenName = (String) payload.get("given_name");
 
-                Integer userId = userService.addNewUser(gid, givenName, familyName, email, "");
+                user = userService.addNewUser(gid, givenName, familyName, email, "");
                 // Integer userId = 15;
-                System.out.println(contactService.getAndAddUserContacts(userId, accessToken));
+                System.out.println(contactService.getAndAddUserContacts(user.getId(), accessToken));
             }
 
         } else {
             System.out.println("Invalid ID token.");
         }
 
-        return idTokenString;
+        return user;
     }
 }

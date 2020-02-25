@@ -15,7 +15,7 @@ public class UserService {
         return userRepository.findByGid(gid);
     }
 
-    public Integer addNewUser (String gid, String firstName, String lastName, String emailAddress, String phoneNumber) {
+    public User addNewUser (String gid, String firstName, String lastName, String emailAddress, String phoneNumber) {
         User newUser = new User();
         newUser.setGid(gid);
         newUser.setFirstName(firstName);
@@ -24,6 +24,6 @@ public class UserService {
         newUser.setPhoneNumber(phoneNumber);
         // newUser.setCreateTime(new Date(119, 6, 8));
         User saved = userRepository.save(newUser);
-        return saved.getId();
+        return saved;
     }
 }
