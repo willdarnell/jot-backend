@@ -1,3 +1,4 @@
+/*
 INSERT INTO `contacts` (`user_id`, `google_id`, `first_name`, `last_name`, `email_address`, `phone_number`, `organization`, `role`, `update_date`) VALUES
 (3,'c8316699825951721908','Geraldine','Porter','geraldine@nottherainforest.co','(408) 123-5678','Amazon','Software Engineering Intern','2019-01-01'),
 (1,'c9151718137752397372','Daniel','Smith','hamiltontaylor@hotmail.com','1791562225','Paul-Ball','Scientist- clinical (histocompatibility and immunogenetics)','2019-01-01'),
@@ -205,3 +206,4 @@ INSERT INTO `activities` (`user_id`, `complete_date`, `due_date`, `status`, `typ
 (2,'2019-01-01','2019-01-01','blank status','type is blank','this is the third entry', 8),
 (2,'2019-01-01','2019-01-01','blank status','type is blank','this is the fourth entry', 8);
 
+*/
