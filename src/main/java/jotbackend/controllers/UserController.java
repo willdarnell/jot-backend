@@ -1,14 +1,17 @@
 package jotbackend.controllers;
 
+import jotbackend.classes.Contact;
 import jotbackend.classes.User;
 import jotbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -36,6 +39,27 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public @ResponseBody
     Optional<User> getUserById(@PathVariable Integer id) { return userRepository.findById(id);}
+
+    @PutMapping(path = "/delete/{userId}")
+    public @ResponseBody
+    void deleteUserById(@PathVariable Integer userId) {
+
+        userRepository.deleteById(userId);
+    }
+
+    @PutMapping(path = "update/{userId}")
+    void updateUser(@PathVariable Integer userId, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String emailAddress,
+                    @RequestParam String phoneNumber) {
+        User updatedUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException());
+        updatedUser.setFirstName(firstName);
+        updatedUser.setLastName(lastName);
+        updatedUser.setEmailAddress(emailAddress);
+        updatedUser.setPhoneNumber(phoneNumber);
+        User savedUser = userRepository.save(updatedUser);
+
+    }
+
 }
 
 
