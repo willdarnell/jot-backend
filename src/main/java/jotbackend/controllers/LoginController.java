@@ -4,17 +4,25 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.people.v1.PeopleService;
+import jotbackend.classes.AuthenticationResponse;
+import jotbackend.classes.JotUserDetails;
 import jotbackend.classes.User;
 import jotbackend.services.ContactService;
 import jotbackend.services.UserService;
+import jotbackend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,10 +42,15 @@ public class LoginController {
     private UserService userService;
     @Autowired
     private ContactService contactService;
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     // @PostMapping(path = "/login", produces = "application/json")
     @PostMapping(path = "/login")
-    User verifyToken (@RequestBody Map<String, String> request) throws GeneralSecurityException, IOException {
+    ResponseEntity<?> authenticate (@RequestBody Map<String, String> request) throws Exception {
+
         String idTokenString = request.get("idTokenString");
         String accessToken = request.get("accessToken");
 
@@ -80,6 +93,20 @@ public class LoginController {
             System.out.println("Invalid ID token.");
         }
 
-        return user;
+        /*
+        try {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String userPassword = passwordEncoder.encode(" ");
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmailAddress(), userPassword));
+        }
+        catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username password combination", e);
+        }
+         */
+
+        JotUserDetails userDetails = new JotUserDetails(user);
+        final String jwt = jwtUtil.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 }
