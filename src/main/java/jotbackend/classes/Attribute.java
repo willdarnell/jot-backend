@@ -33,6 +33,13 @@ public class Attribute {
         }, mappedBy = "attributes")
     private Set<Contact> contacts = new HashSet<>();
 
+    @PreRemove
+    private void removeAttributeFromContact() {
+        for (Contact c : contacts) {
+            c.removeAttribute(this);
+        }
+    }
+
 
     public Integer getAttributeId() {
         return attributeId;

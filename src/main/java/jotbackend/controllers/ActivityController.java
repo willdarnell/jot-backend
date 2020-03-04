@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@CrossOrigin(allowedHeaders = "*")
 @RequestMapping(path = "/activities")
 public class ActivityController {
     @Autowired

@@ -49,6 +49,15 @@ public class Contact {
         inverseJoinColumns = {@JoinColumn(name = "attribute_id")})
     private Set<Attribute> attributes = new HashSet<>();
 
+    public void removeAttribute(Attribute attribute){
+        for (Attribute a : attributes) {
+            if(a.getAttributeId().equals(attribute.getAttributeId())){
+                attributes.remove(a);
+                return;
+            }
+        }
+    }
+
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
