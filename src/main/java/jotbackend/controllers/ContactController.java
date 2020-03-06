@@ -6,10 +6,6 @@ import jotbackend.repositories.AttributeRepository;
 import jotbackend.classes.Contact;
 import jotbackend.repositories.ContactRepository;
 import jotbackend.classes.ContactIdAndName;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -44,9 +40,7 @@ public class ContactController {
             return;
         }
         Attribute attribute = findAttributeResult.get();
-
         contact.getAttributes().add(attribute);
-
         contactRepository.save(contact);
     }
 
@@ -62,9 +56,7 @@ public class ContactController {
             return;
         }
         Attribute attribute = findAttributeResult.get(0);
-
         contact.getAttributes().add(attribute);
-
         contactRepository.save(contact);
     }
 
@@ -80,9 +72,7 @@ public class ContactController {
             return;
         }
         Attribute attribute = findAttributeResult.get();
-
         contact.getAttributes().remove(attribute);
-
         contactRepository.save(contact);
     }
 
@@ -98,9 +88,7 @@ public class ContactController {
             return;
         }
         Attribute attribute = findAttributeResult.get(0);
-
         contact.getAttributes().remove(attribute);
-
         contactRepository.save(contact);
     }
 
@@ -121,7 +109,6 @@ public class ContactController {
         newContact.setRole(role);
         newContact = contactRepository.save(newContact);
         Integer newId = newContact.getContactId();
-        // Add any attributes to newly created contact
         if (attributeTitles != null) {
             for (String attribute : attributeTitles) {
                 addAttributeToContact(newId, attribute);
@@ -210,23 +197,19 @@ public class ContactController {
                 .orElseThrow(() -> new ResourceNotFoundException());
         updatedContact.setUpdateDate(date);
         updatedContact.setGoogleId(googleId);
-
         updatedContact.setFirstName(firstName);
         updatedContact.setLastName(lastName);
         updatedContact.setEmailAddress(emailAddress);
         updatedContact.setPhoneNumber(phoneNumber);
         updatedContact.setOrganization(organization);
         updatedContact.setRole(role);
-        // Remove any attributes
         updatedContact.getAttributes().clear();
         Contact savedContact = contactRepository.save(updatedContact);
-        // Re-add new list of attributes
         if (attributeTitles != null) {
             for (String attribute : attributeTitles) {
                 addAttributeToContact(contactId, attribute);
             }
         }
-        //return "Saved";
 
     }
 

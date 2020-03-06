@@ -1,17 +1,12 @@
 package jotbackend.controllers;
 
-import jotbackend.classes.Contact;
 import jotbackend.classes.User;
 import jotbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Controller

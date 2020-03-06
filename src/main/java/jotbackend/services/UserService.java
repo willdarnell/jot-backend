@@ -22,7 +22,6 @@ public class UserService {
         newUser.setLastName(lastName);
         newUser.setEmailAddress(emailAddress);
         newUser.setPhoneNumber(phoneNumber);
-        // newUser.setCreateTime(new Date(119, 6, 8));
         User saved = userRepository.save(newUser);
         return saved;
     }

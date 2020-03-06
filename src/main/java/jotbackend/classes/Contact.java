@@ -2,11 +2,9 @@ package jotbackend.classes;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import java.util.*;
 import javax.persistence.*;
-import jotbackend.classes.Activity;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Entity
 @Table(name = "contacts")
