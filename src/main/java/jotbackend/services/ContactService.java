@@ -41,8 +41,11 @@ public class ContactService {
                     ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
                     if (result.getBody() != null) {
                         JsonNode jn = mapper.readValue(result.getBody(), JsonNode.class);
-                        saveUserContacts(jn.get("connections"), userId);
-                        // System.out.println(result.getBody());
+                        JsonNode cn = jn.get("connections");
+                        if (cn != null) {
+                            saveUserContacts(cn, userId);
+                        }
+                        System.out.println(result.getBody());
                         nextPageNode = jn.get("nextPageToken");
                         if (nextPageNode != null) {
                             nextPageToken = nextPageNode.asText();
@@ -61,7 +64,7 @@ public class ContactService {
 
     public void saveUserContacts(JsonNode contacts, Integer userId) {
 
-        if (contacts.isArray()) {
+        if (contacts != null && contacts.isArray()) {
             for (JsonNode contact : contacts) {
 
                 String googleId = "", firstName = "", lastName = "", emailAddress = "", phoneNumber = "", organization = "", role = "";
