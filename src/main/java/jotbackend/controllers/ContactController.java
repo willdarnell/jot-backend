@@ -7,6 +7,9 @@ import jotbackend.classes.Contact;
 import jotbackend.repositories.ContactRepository;
 import jotbackend.classes.ContactIdAndName;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -106,6 +109,7 @@ public class ContactController {
                                                @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
                                                @RequestParam String organization, @RequestParam String role,
                                                @RequestParam(value="attributeTitle", required = false) List<String> attributeTitles) {
+
         Contact newContact = new Contact();
         newContact.setUserId(userId);
         newContact.setGoogleId(googleId);
@@ -115,8 +119,6 @@ public class ContactController {
         newContact.setPhoneNumber(phoneNumber);
         newContact.setOrganization(organization);
         newContact.setRole(role);
-        newContact.setCreateTime(new Date(119,6,8));
-        newContact.setUpdateDate(new Date(119,6,8));
         newContact = contactRepository.save(newContact);
         Integer newId = newContact.getContactId();
         // Add any attributes to newly created contact
@@ -203,9 +205,12 @@ public class ContactController {
                                               @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
                                               @RequestParam String organization, @RequestParam String role,
                                               @RequestParam(required = false, value="attributeTitle") List<String> attributeTitles){
+        Date date = new Date();
         Contact updatedContact = contactRepository.findById(contactId)
                 .orElseThrow(() -> new ResourceNotFoundException());
+        updatedContact.setUpdateDate(date);
         updatedContact.setGoogleId(googleId);
+
         updatedContact.setFirstName(firstName);
         updatedContact.setLastName(lastName);
         updatedContact.setEmailAddress(emailAddress);
