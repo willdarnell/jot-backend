@@ -105,7 +105,7 @@ public class ContactController {
     public @ResponseBody String addNewContact (@RequestParam Integer userId, @RequestParam String googleId, @RequestParam String firstName,
                                                @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
                                                @RequestParam String organization, @RequestParam String role,
-                                               @RequestParam(value="attributeTitle") List<String> attributeTitles) {
+                                               @RequestParam(value="attributeTitle", required = false) List<String> attributeTitles) {
         Contact newContact = new Contact();
         newContact.setUserId(userId);
         newContact.setGoogleId(googleId);
@@ -120,8 +120,10 @@ public class ContactController {
         newContact = contactRepository.save(newContact);
         Integer newId = newContact.getContactId();
         // Add any attributes to newly created contact
-        for (String attribute : attributeTitles) {
-            addAttributeToContact(newId, attribute);
+        if (attributeTitles != null) {
+            for (String attribute : attributeTitles) {
+                addAttributeToContact(newId, attribute);
+            }
         }
         return "Saved";
     }

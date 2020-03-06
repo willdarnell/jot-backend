@@ -32,8 +32,8 @@ public class ActivityController {
     @PostMapping(path = "/add")
     public @ResponseBody String addNewActivity (@RequestParam Integer userId,
                                                 @RequestParam Integer contactId,
-                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date completeDate,
-                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dueDate,
+                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date completeDate,
+                                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dueDate,
                                                 @RequestParam String status,
                                                 @RequestParam String type,
                                                 @RequestParam String notes ){
@@ -46,9 +46,12 @@ public class ActivityController {
         }
         Contact contact = findContactResult.get();
         newActivity.setContact(contact);
-
-        newActivity.setCompleteDate(completeDate);
-        newActivity.setDueDate(dueDate);
+        if (completeDate != null) {
+            newActivity.setCompleteDate(completeDate);
+        }
+        if (dueDate != null) {
+            newActivity.setDueDate(dueDate);
+        }
         newActivity.setStatus(status);
         newActivity.setType(type);
         newActivity.setNotes(notes);
@@ -117,7 +120,6 @@ public class ActivityController {
 
     @PutMapping(path = "/update")
     public @ResponseBody String updateActivity (@RequestParam Integer activityId,
-                                                @RequestParam Integer userId,
                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date completeDate,
                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dueDate,
                                                 @RequestParam String status,
@@ -125,7 +127,6 @@ public class ActivityController {
                                                 @RequestParam String notes ){
         Activity updatedActivity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new ResourceNotFoundException());
-        updatedActivity.setUserId(userId);
         updatedActivity.setCompleteDate(completeDate);
         updatedActivity.setDueDate(dueDate);
         updatedActivity.setStatus(status);
