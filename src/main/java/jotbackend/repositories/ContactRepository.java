@@ -1,10 +1,10 @@
 package jotbackend.repositories;
 
 import jotbackend.classes.Contact;
+import jotbackend.classes.ContactIdAndName;
 import jotbackend.classes.Activity;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +18,8 @@ import javax.persistence.NamedNativeQuery;
 public interface ContactRepository extends PagingAndSortingRepository<Contact, Integer> {
 
     Page<Contact> findByUserId(Integer userId, Pageable pageable);
+
+    List<ContactIdAndName> findByUserId(Integer userId);
 
     @Query("SELECT DISTINCT contactRecord " +
             "FROM Contact contactRecord " +

@@ -1,6 +1,7 @@
 package jotbackend.classes;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.*;
 import javax.persistence.*;
@@ -22,6 +23,8 @@ public class Contact {
     private String firstName;
 
     private String lastName;
+
+    private String fullName;
 
     private String emailAddress;
 
@@ -58,6 +61,7 @@ public class Contact {
         }
     }
 
+    @JsonBackReference
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
@@ -121,6 +125,8 @@ public class Contact {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String getFullName() { return firstName.concat(" ".concat(lastName)); }
 
     public String getEmailAddress() {
         return emailAddress;

@@ -34,6 +34,7 @@ public class Activity {
     @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createDate = new Date();
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "contact_id")
     private Contact contact;
@@ -102,7 +103,13 @@ public class Activity {
         this.createDate = createDate;
     }
 
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
 
+    public Contact getContact() {
+        return contact;
+    }
 
 
 

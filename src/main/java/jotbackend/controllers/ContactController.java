@@ -5,6 +5,7 @@ import jotbackend.classes.Attribute;
 import jotbackend.repositories.AttributeRepository;
 import jotbackend.classes.Contact;
 import jotbackend.repositories.ContactRepository;
+import jotbackend.classes.ContactIdAndName;
 
 import java.util.Date;
 import java.util.List;
@@ -152,6 +153,11 @@ public class ContactController {
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return contactRepository.findByUserId(userId, pageable);
+    }
+
+    @GetMapping(path = "/IdAndNames")
+    public @ResponseBody List<ContactIdAndName> getAllIdAndNameByUserId(@RequestParam Integer userId) {
+        return contactRepository.findByUserId(userId);
     }
 
     @GetMapping(path = "/byAttributes")

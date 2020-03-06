@@ -7,6 +7,7 @@ import java.util.Optional;
 import jotbackend.classes.Activity;
 import jotbackend.classes.Contact;
 import jotbackend.repositories.ActivityRepository;
+import jotbackend.repositories.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +26,12 @@ public class ActivityController {
     @Autowired
     private ActivityRepository activityRepository;
 
+    @Autowired
+    private ContactRepository contactRepository;
+
     @PostMapping(path = "/add")
     public @ResponseBody String addNewActivity (@RequestParam Integer userId,
+                                                @RequestParam Integer contactId,
                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date completeDate,
                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dueDate,
                                                 @RequestParam String status,
@@ -34,6 +39,14 @@ public class ActivityController {
                                                 @RequestParam String notes ){
         Activity newActivity = new Activity();
         newActivity.setUserId(userId);
+
+        Optional<Contact> findContactResult = contactRepository.findById(contactId);
+        if (!findContactResult.isPresent()) {
+            return "Error, contact not found";
+        }
+        Contact contact = findContactResult.get();
+        newActivity.setContact(contact);
+
         newActivity.setCompleteDate(completeDate);
         newActivity.setDueDate(dueDate);
         newActivity.setStatus(status);
