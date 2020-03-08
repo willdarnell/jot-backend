@@ -65,7 +65,7 @@ public class Contact {
             orphanRemoval = true,
             mappedBy = "contact"
     )
-    private List<Activity> activities = new ArrayList<>();
+    private List<Activity> activities;
 
     public Contact() {
 
@@ -82,6 +82,7 @@ public class Contact {
         this.phoneNumber = phoneNumber;
         this.organization = organization;
         this.role = role;
+        this.activities = new ArrayList<>();
     }
 
     public Integer getContactId() {
