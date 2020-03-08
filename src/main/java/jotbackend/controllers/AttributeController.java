@@ -64,7 +64,7 @@ public class AttributeController {
 
     }
 
-    @PutMapping(path = "/delete/{attributeId}")
+    @DeleteMapping(path = "/delete/{attributeId}")
     public @ResponseBody
     void deleteAttributeById(@PathVariable Integer attributeId) {
         attributeRepository.deleteById(attributeId);

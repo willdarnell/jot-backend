@@ -181,7 +181,7 @@ public class ContactController {
         return contactRepository.findById(contactId);
     }
 
-    @PutMapping(path = "/delete/{contactId}")
+    @DeleteMapping(path = "/delete/{contactId}")
     public @ResponseBody
     void deleteContactById(@PathVariable Integer contactId) {
         contactRepository.deleteById(contactId);
