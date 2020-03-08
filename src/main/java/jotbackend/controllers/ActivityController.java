@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -116,12 +118,13 @@ public class ActivityController {
     }
 
     @PutMapping(path = "/update")
-    public @ResponseBody String updateActivity (@RequestParam Integer activityId,
-                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date completeDate,
-                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dueDate,
-                                                @RequestParam String status,
-                                                @RequestParam String type,
-                                                @RequestParam String notes ){
+    public @ResponseBody
+    ResponseEntity updateActivity (@RequestParam Integer activityId,
+                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date completeDate,
+                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dueDate,
+                                          @RequestParam String status,
+                                          @RequestParam String type,
+                                          @RequestParam String notes ){
         Activity updatedActivity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new ResourceNotFoundException());
         updatedActivity.setCompleteDate(completeDate);
@@ -130,6 +133,6 @@ public class ActivityController {
         updatedActivity.setType(type);
         updatedActivity.setNotes(notes);
         activityRepository.save(updatedActivity);
-        return "Saved";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

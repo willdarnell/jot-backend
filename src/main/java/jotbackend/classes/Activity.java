@@ -1,14 +1,13 @@
 package jotbackend.classes;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
-import jotbackend.classes.Contact;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "activityId")
 @Table(name = "activities")
 public class Activity {
 
@@ -34,7 +33,6 @@ public class Activity {
     @Column(name = "create_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createDate = new Date();
 
-    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "contact_id")
     private Contact contact;
