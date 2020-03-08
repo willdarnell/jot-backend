@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -188,10 +190,11 @@ public class ContactController {
     }
 
     @PutMapping(path = "update/{contactId}")
-    void updateContact(@PathVariable Integer contactId, @RequestParam String googleId, @RequestParam String firstName,
-                                              @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
-                                              @RequestParam String organization, @RequestParam String role,
-                                              @RequestParam(required = false, value="attributeTitle") List<String> attributeTitles){
+    public @ResponseBody
+    ResponseEntity updateContact(@PathVariable Integer contactId, @RequestParam String googleId, @RequestParam String firstName,
+                                 @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
+                                 @RequestParam String organization, @RequestParam String role,
+                                 @RequestParam(required = false, value="attributeTitle") List<String> attributeTitles){
         Date date = new Date();
         Contact updatedContact = contactRepository.findById(contactId)
                 .orElseThrow(() -> new ResourceNotFoundException());
@@ -210,7 +213,7 @@ public class ContactController {
                 addAttributeToContact(contactId, attribute);
             }
         }
-
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(path = "/getRecentActivities/{contactId}")

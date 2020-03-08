@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +52,8 @@ public class AttributeController {
     }
 
     @PutMapping(path = "/update/{attributeId}")
-    public @ResponseBody String updateAttribute(@PathVariable Integer attributeId,
+    public @ResponseBody
+    ResponseEntity updateAttribute(@PathVariable Integer attributeId,
                                               @RequestParam Integer userId,
                                               @RequestParam String title,
                                               @RequestParam String description){
@@ -60,8 +63,7 @@ public class AttributeController {
         updatedAttribute.setTitle(title);
         updatedAttribute.setDescription(description);
         attributeRepository.save(updatedAttribute);
-        return "Saved";
-
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/delete/{attributeId}")
