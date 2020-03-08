@@ -1,12 +1,15 @@
 package jotbackend.classes;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.*;
 import javax.persistence.*;
 
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "contactId")
 @Table(name = "contacts")
 public class Contact {
 
@@ -59,7 +62,7 @@ public class Contact {
         }
     }
 
-    @JsonBackReference
+    //@JsonBackReference
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
