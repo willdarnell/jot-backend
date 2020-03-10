@@ -15,6 +15,8 @@ public class UserService {
         return userRepository.findByGid(gid);
     }
 
+    public Optional<User> getUserByEmailAddress(String email) { return userRepository.findByEmailAddress(email); }
+
     public User addNewUser (String gid, String firstName, String lastName, String emailAddress, String phoneNumber) {
         User newUser = new User();
         newUser.setGid(gid);

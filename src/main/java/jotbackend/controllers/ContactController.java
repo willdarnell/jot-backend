@@ -1,14 +1,15 @@
 package jotbackend.controllers;
 
-import jotbackend.classes.Activity;
-import jotbackend.classes.Attribute;
+import jotbackend.classes.*;
 import jotbackend.repositories.AttributeRepository;
-import jotbackend.classes.Contact;
 import jotbackend.repositories.ContactRepository;
-import jotbackend.classes.ContactIdAndName;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import jotbackend.services.UserService;
+import jotbackend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,12 @@ public class ContactController {
 
     @Autowired
     private AttributeRepository attributeRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserService userService;
 
     private void addAttributeToContact(Integer contactId, Integer attributeId) {
         Optional<Contact> findContactResult = contactRepository.findById(contactId);
@@ -138,14 +145,22 @@ public class ContactController {
     }
 
     @GetMapping(path = "/all")
-    public @ResponseBody Page<Contact> getAllContactsByUserId(@RequestParam Integer userId,
+    public ResponseEntity getAllContactsByUserId(@RequestHeader("authorization") String token,
                                                               @RequestParam Integer pageNum,
                                                               @RequestParam Integer pageSize,
                                                               @RequestParam String sortField,
                                                               @RequestParam String sortDirection) {
+        String jwt = token.substring(7);
+        String email = jwtUtil.extractUsername(jwt);
+        Optional<User> user_opt = userService.getUserByEmailAddress(email);
+        if (!user_opt.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        User user = user_opt.get();
+        Integer userId = user.getId();
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-        return contactRepository.findByUserId(userId, pageable);
+        return new ResponseEntity<>(contactRepository.findByUserId(userId, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/IdAndNames")
