@@ -65,38 +65,6 @@ public class ContactController {
         contactRepository.save(contact);
     }
 
-    private void removeAttributeFromContact(Integer contactId, Integer attributeId) {
-        Optional<Contact> findContactResult = contactRepository.findById(contactId);
-        if (!findContactResult.isPresent()) {
-            return;
-        }
-        Contact contact = findContactResult.get();
-
-        Optional<Attribute> findAttributeResult = attributeRepository.findById(attributeId);
-        if (!findAttributeResult.isPresent()) {
-            return;
-        }
-        Attribute attribute = findAttributeResult.get();
-        contact.getAttributes().remove(attribute);
-        contactRepository.save(contact);
-    }
-
-    private void removeAttributeFromContact(Integer contactId, String attributeTitle) {
-        Optional<Contact> findContactResult = contactRepository.findById(contactId);
-        if (!findContactResult.isPresent()) {
-            return;
-        }
-        Contact contact = findContactResult.get();
-
-        List<Attribute> findAttributeResult = attributeRepository.findByTitle(attributeTitle);
-        if (findAttributeResult.size() == 0) {
-            return;
-        }
-        Attribute attribute = findAttributeResult.get(0);
-        contact.getAttributes().remove(attribute);
-        contactRepository.save(contact);
-    }
-
     @PostMapping(path = "/add")
     public ResponseEntity addNewContact (@RequestParam String googleId, @RequestParam String firstName,
                                                @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
@@ -118,26 +86,6 @@ public class ContactController {
             }
         }
         return new ResponseEntity<>(newContact, HttpStatus.CREATED);
-    }
-
-    // TODO: LEFT ALONE - UNUSED?
-    @PostMapping(path = "/addAttribute")
-    public @ResponseBody String addAttribute(@RequestParam Integer contactId,
-                                             @RequestParam Integer attributeId) {
-
-        addAttributeToContact(contactId, attributeId);
-
-        return "Added";
-    }
-
-    // TODO: LEFT ALONE - UNUSED?
-    @PostMapping(path = "/removeAttribute")
-    public @ResponseBody String removeAttribute(@RequestParam Integer contactId,
-                                                @RequestParam Integer attributeId) {
-
-        removeAttributeFromContact(contactId, attributeId);
-
-        return "Removed";
     }
 
     @GetMapping(path = "/all")
@@ -282,20 +230,6 @@ public class ContactController {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/getRecentActivities/{contactId}")
-    public @ResponseBody
-    List<Activity> getRecentActivitiesByContact(@PathVariable Integer contactId){
-        List<Activity> list = contactRepository.getRecentActivitiesByContact(contactId);
-        return list;
-    }
-
-    @GetMapping(path = "getMostRecentActivity/{contactId}")
-    public @ResponseBody
-    Activity getMostRecentActivity(@PathVariable Integer contactId){
-        List<Activity> list = contactRepository.getRecentActivitiesByContact(contactId);
-        return list.get(list.size() - 1);
     }
 
 }

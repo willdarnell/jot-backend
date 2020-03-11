@@ -71,24 +71,12 @@ public class LoginController {
                 String givenName = (String) payload.get("given_name");
 
                 user = userService.addNewUser(gid, givenName, familyName, email, "");
-                // Integer userId = 15;
                 System.out.println(contactService.getAndAddUserContacts(user.getId(), accessToken));
             }
 
         } else {
             System.out.println("Invalid ID token.");
         }
-
-        /*
-        try {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String userPassword = passwordEncoder.encode(" ");
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmailAddress(), userPassword));
-        }
-        catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username password combination", e);
-        }
-         */
 
         JotUserDetails userDetails = new JotUserDetails(user);
         final String jwt = jwtUtil.generateToken(userDetails);
