@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "contactId")
+        property = "fullName")
 @Table(name = "contacts")
 public class Contact {
 

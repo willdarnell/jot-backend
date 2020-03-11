@@ -6,8 +6,6 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "activityId")
 @Table(name = "activities")
 public class Activity {
 
