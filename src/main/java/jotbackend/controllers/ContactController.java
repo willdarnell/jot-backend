@@ -18,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -102,20 +104,19 @@ public class ContactController {
     }
 
     @PostMapping(path = "/add")
-    public @ResponseBody String addNewContact (@RequestParam Integer userId, @RequestParam String googleId, @RequestParam String firstName,
+    public ResponseEntity addNewContact (@RequestParam String googleId, @RequestParam String firstName,
                                                @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
                                                @RequestParam String organization, @RequestParam String role,
                                                @RequestParam(value="attributeTitle", required = false) List<String> attributeTitles) {
 
-        Contact newContact = new Contact();
-        newContact.setUserId(userId);
-        newContact.setGoogleId(googleId);
-        newContact.setFirstName(firstName);
-        newContact.setLastName(lastName);
-        newContact.setEmailAddress(emailAddress);
-        newContact.setPhoneNumber(phoneNumber);
-        newContact.setOrganization(organization);
-        newContact.setRole(role);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer userId;
+        if (!(principal instanceof JotUserDetails)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        userId = ((JotUserDetails)principal).getId();
+
+        Contact newContact = new Contact(userId, googleId, firstName, lastName, emailAddress, phoneNumber, organization, role);
         newContact = contactRepository.save(newContact);
         Integer newId = newContact.getContactId();
         if (attributeTitles != null) {
@@ -123,7 +124,7 @@ public class ContactController {
                 addAttributeToContact(newId, attribute);
             }
         }
-        return "Saved";
+        return new ResponseEntity<>(newContact, HttpStatus.OK);
     }
 
     @PostMapping(path = "/addAttribute")
@@ -150,14 +151,14 @@ public class ContactController {
                                                               @RequestParam Integer pageSize,
                                                               @RequestParam String sortField,
                                                               @RequestParam String sortDirection) {
-        String jwt = token.substring(7);
-        String email = jwtUtil.extractUsername(jwt);
-        Optional<User> user_opt = userService.getUserByEmailAddress(email);
-        if (!user_opt.isPresent()) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer userId;
+        if (!(principal instanceof JotUserDetails)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        User user = user_opt.get();
-        Integer userId = user.getId();
+        userId = ((JotUserDetails)principal).getId();
+
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return new ResponseEntity<>(contactRepository.findByUserId(userId, pageable), HttpStatus.OK);
