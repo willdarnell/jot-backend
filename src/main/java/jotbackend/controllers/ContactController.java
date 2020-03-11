@@ -33,12 +33,6 @@ public class ContactController {
     @Autowired
     private AttributeRepository attributeRepository;
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private UserService userService;
-
     private void addAttributeToContact(Integer contactId, Integer attributeId) {
         Optional<Contact> findContactResult = contactRepository.findById(contactId);
         if (!findContactResult.isPresent()) {
@@ -110,11 +104,10 @@ public class ContactController {
                                                @RequestParam(value="attributeTitle", required = false) List<String> attributeTitles) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer userId;
         if (!(principal instanceof JotUserDetails)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        userId = ((JotUserDetails)principal).getId();
+        Integer userId = ((JotUserDetails)principal).getId();
 
         Contact newContact = new Contact(userId, googleId, firstName, lastName, emailAddress, phoneNumber, organization, role);
         newContact = contactRepository.save(newContact);
@@ -124,9 +117,10 @@ public class ContactController {
                 addAttributeToContact(newId, attribute);
             }
         }
-        return new ResponseEntity<>(newContact, HttpStatus.OK);
+        return new ResponseEntity<>(newContact, HttpStatus.CREATED);
     }
 
+    // TODO: LEFT ALONE - UNUSED?
     @PostMapping(path = "/addAttribute")
     public @ResponseBody String addAttribute(@RequestParam Integer contactId,
                                              @RequestParam Integer attributeId) {
@@ -136,6 +130,7 @@ public class ContactController {
         return "Added";
     }
 
+    // TODO: LEFT ALONE - UNUSED?
     @PostMapping(path = "/removeAttribute")
     public @ResponseBody String removeAttribute(@RequestParam Integer contactId,
                                                 @RequestParam Integer attributeId) {
@@ -153,67 +148,123 @@ public class ContactController {
                                                               @RequestParam String sortDirection) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer userId;
         if (!(principal instanceof JotUserDetails)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        userId = ((JotUserDetails)principal).getId();
+        Integer userId = ((JotUserDetails)principal).getId();
 
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         return new ResponseEntity<>(contactRepository.findByUserId(userId, pageable), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/IdAndNames")
-    public @ResponseBody List<ContactIdAndName> getAllIdAndNameByUserId(@RequestParam Integer userId) {
-        return contactRepository.findByUserId(userId);
+    @GetMapping(path = "/names")
+    //public @ResponseBody List<ContactIdAndName> getAllIdAndNameByUserId(@RequestParam Integer userId) {
+     public ResponseEntity getAllIdAndNameByUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof JotUserDetails)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        Integer userId = ((JotUserDetails)principal).getId();
+        return new ResponseEntity<>(contactRepository.findByUserId(userId), HttpStatus.OK);
     }
 
     @GetMapping(path = "/byAttributes")
-    public @ResponseBody Page<Contact> getContactsByAttributes(@RequestParam Integer userId,
-                                                              @RequestParam Integer pageNum,
+    public ResponseEntity getContactsByAttributes(@RequestParam Integer pageNum,
                                                               @RequestParam Integer pageSize,
                                                               @RequestParam String sortField,
                                                               @RequestParam String sortDirection,
                                                               @RequestParam(value="attributeId") List<Integer> attributeIds) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof JotUserDetails)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        };
+        Integer userId = ((JotUserDetails)principal).getId();
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-        return contactRepository.getContactsByAttributes(userId, attributeIds, pageable);
+        return new ResponseEntity<>(contactRepository.getContactsByAttributes(userId, attributeIds, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/searchByName")
-    public @ResponseBody Page<Contact> searchContactsByName(@RequestParam Integer userId,
-                                                               @RequestParam Integer pageNum,
+    public ResponseEntity searchContactsByName(@RequestParam Integer pageNum,
                                                                @RequestParam Integer pageSize,
                                                                @RequestParam String sortField,
                                                                @RequestParam String sortDirection,
                                                                @RequestParam String searchVal) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof JotUserDetails)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        };
+        Integer userId = ((JotUserDetails)principal).getId();
+
         Pageable pageable = PageRequest.of(pageNum, pageSize,
                 Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-        return contactRepository.searchContactsByName(userId, searchVal, pageable);
+        return new ResponseEntity<>(contactRepository.searchContactsByName(userId, searchVal, pageable), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{contactId}")
-    public @ResponseBody
-    Optional<Contact> getContactById(@PathVariable Integer contactId) {
-        return contactRepository.findById(contactId);
+    public ResponseEntity getContactById(@PathVariable Integer contactId) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof JotUserDetails)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        };
+        Integer userId = ((JotUserDetails)principal).getId();
+
+        Optional<Contact> contact = contactRepository.findById(contactId);
+
+        if (!contact.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else if (contact.get().getUserId() != userId) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/delete/{contactId}")
-    public @ResponseBody
-    void deleteContactById(@PathVariable Integer contactId) {
+    public ResponseEntity deleteContactById(@PathVariable Integer contactId) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof JotUserDetails)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        };
+        Integer userId = ((JotUserDetails)principal).getId();
+
+        Optional<Contact> contact = contactRepository.findById(contactId);
+
+        if (!contact.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else if (contact.get().getUserId() != userId) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         contactRepository.deleteById(contactId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(path = "update/{contactId}")
-    public @ResponseBody
-    ResponseEntity updateContact(@PathVariable Integer contactId, @RequestParam String googleId, @RequestParam String firstName,
+    public ResponseEntity updateContact(@PathVariable Integer contactId, @RequestParam String googleId, @RequestParam String firstName,
                                  @RequestParam String lastName, @RequestParam String emailAddress, @RequestParam String phoneNumber,
                                  @RequestParam String organization, @RequestParam String role,
                                  @RequestParam(required = false, value="attributeTitle") List<String> attributeTitles){
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof JotUserDetails)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        };
+        Integer userId = ((JotUserDetails)principal).getId();
+
+        Optional<Contact> contact = contactRepository.findById(contactId);
+        if (!contact.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else if (contact.get().getUserId() != userId) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN); }
+
         Date date = new Date();
-        Contact updatedContact = contactRepository.findById(contactId)
-                .orElseThrow(() -> new ResourceNotFoundException());
+        Contact updatedContact = contact.get();
         updatedContact.setUpdateDate(date);
         updatedContact.setGoogleId(googleId);
         updatedContact.setFirstName(firstName);
@@ -223,12 +274,13 @@ public class ContactController {
         updatedContact.setOrganization(organization);
         updatedContact.setRole(role);
         updatedContact.getAttributes().clear();
-        Contact savedContact = contactRepository.save(updatedContact);
+        contactRepository.save(updatedContact);
         if (attributeTitles != null) {
             for (String attribute : attributeTitles) {
                 addAttributeToContact(contactId, attribute);
             }
         }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
