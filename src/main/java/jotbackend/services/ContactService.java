@@ -73,7 +73,7 @@ public class ContactService {
 
                 // get names array
                 JsonNode namesNode = contact.get("names");
-                if (namesNode.isArray()) {
+                if (namesNode != null && namesNode.isArray()) {
                     for (JsonNode name : namesNode) {
                         if (name.get("metadata").get("primary").asText() == "true") {
                             if (name.get("givenName") != null) {
@@ -88,7 +88,7 @@ public class ContactService {
 
                 // get emailaddresses array
                 JsonNode emailsNode = contact.get("emailAddresses");
-                if (emailsNode.isArray()) {
+                if (emailsNode != null && emailsNode.isArray()) {
                     for (JsonNode email : emailsNode) {
                         if (email.get("metadata").get("primary").asText() == "true") {
                             if (email.get("value") != null) {
@@ -100,7 +100,7 @@ public class ContactService {
 
                 // get phoneNumber
                 JsonNode phonesNode = contact.get("phoneNumbers");
-                if (phonesNode.isArray()) {
+                if (phonesNode != null && phonesNode.isArray()) {
                     for (JsonNode phone : phonesNode) {
                         if (phone.get("metadata").get("primary").asText() == "true") {
                             if (phone.get("value") != null) {
@@ -112,7 +112,7 @@ public class ContactService {
 
                 // get organizations array
                 JsonNode orgsNode = contact.get("organizations");
-                if (orgsNode.isArray()) {
+                if (orgsNode != null && orgsNode.isArray()) {
                     for (JsonNode org : orgsNode) {
                         if (org.get("metadata").get("primary").asText() == "true") {
                             if (org.get("name") != null) {
