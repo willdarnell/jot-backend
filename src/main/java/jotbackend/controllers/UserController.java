@@ -31,11 +31,11 @@ public class UserController {
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<User> getAllUsers() { return userRepository.findAll();}
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{userId}")
     public @ResponseBody
-    Optional<User> getUserById(@PathVariable Integer id) { return userRepository.findById(id);}
+    Optional<User> getUserById(@PathVariable Integer userId) { return userRepository.findById(userId);}
 
-    @PutMapping(path = "/delete/{userId}")
+    @DeleteMapping(path = "/{userId}")
     public @ResponseBody
     void deleteUserById(@PathVariable Integer userId) {
 
