@@ -125,7 +125,7 @@ public class ActivityController {
         else if (activity.get().getUserId() != userId) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
+        activityRepository.deleteById(activityId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
